@@ -1,0 +1,45 @@
+{
+  "id": "microsoft_sentinel",
+  "name": "Microsoft Sentinel",
+  "name_en": "Microsoft Sentinel",
+  "version": "1.0.0",
+  "description": "Gestión de incidentes en Microsoft Sentinel: listar incidentes, actualizar un incidente, y ejecutar una consulta KQL.",
+  "description_en": "Incident management in Microsoft Sentinel: list incidents, update an incident, and run a KQL query.",
+  "category": "cybersecurity",
+  "category_en": "cybersecurity",
+  "keywords": ["microsoft sentinel", "azure sentinel", "siem", "kql", "incidentes", "incidents", "ciberseguridad", "cybersecurity", "azure"],
+  "icon": "icon.svg",
+  "library": {
+    "package": "ruvic-microsoft-sentinel-connector",
+    "install": "pip install git+https://github.com/tu-org/conector-microsoft-sentinel.git#subdirectory=lib",
+    "import_name": "ruvic_microsoft_sentinel_connector"
+  },
+  "auth_modes": [
+    {
+      "id": "azure_ad_app",
+      "label": "Azure AD App Registration",
+      "fields": [
+        { "key": "tenant_id", "label": "Tenant ID", "type": "text", "required": true, "help_text": "El ID de directorio (tenant) de Azure AD." },
+        { "key": "client_id", "label": "Client ID (Application ID)", "type": "text", "required": true },
+        { "key": "client_secret", "label": "Client Secret", "type": "password", "secret": true, "required": true },
+        { "key": "subscription_id", "label": "Subscription ID", "type": "text", "required": true },
+        { "key": "resource_group", "label": "Resource Group", "type": "text", "required": true },
+        { "key": "workspace_name", "label": "Nombre del workspace de Log Analytics", "type": "text", "required": true },
+        { "key": "workspace_id", "label": "Workspace ID (GUID)", "type": "text", "required": true, "help_text": "Distinto del nombre — es el GUID que se ve en la vista de resumen del workspace en Azure Portal." },
+        { "key": "api_version", "label": "Versión de la API (opcional)", "type": "text", "required": false, "default": "2025-01-01-preview" },
+        { "key": "request_timeout", "label": "Timeout de peticiones (segundos)", "type": "number", "required": false, "default": "30" }
+      ]
+    }
+  ],
+  "env_prefix": "RUVIC_MS_SENTINEL_",
+  "operations": [
+    "cybersecurity.list_incidents",
+    "cybersecurity.update_incident",
+    "cybersecurity.execute_kql_query"
+  ],
+  "test_connection": true,
+  "docs": {
+    "skill": "SKILL.md",
+    "permissions_note": "La App Registration necesita el rol de Azure IAM 'Microsoft Sentinel Responder' (lectura y actualización de incidentes) sobre el workspace, y 'Log Analytics Reader' para ejecutar consultas KQL. No otorgues 'Microsoft Sentinel Contributor' completo ni roles de administrador de la suscripción salvo necesidad real. Este conector no crea ni elimina incidentes ni reglas de detección — solo lista, actualiza campos puntuales, y consulta."
+  }
+}
